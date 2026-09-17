@@ -1,0 +1,35 @@
+name: Compilar main.py a EXE
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch: # Permite lanzarlo manualmente desde GitHub Actions
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Copiar repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller customtkinter pillow python-vlc
+
+    - name: Compilar con PyInstaller
+      run: |
+        pyinstaller --noconsole --onefile --name="ReproductorMultimedia" main.py
+
+    - name: Subir el archivo EXE como Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Reproductor-EXE
+        path: dist/*.exe
