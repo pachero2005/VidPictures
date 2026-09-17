@@ -25,7 +25,7 @@ jobs:
 
     - name: Compilar con PyInstaller
       run: |
-        pyinstaller --noconsole --onefile --name="ReproductorMultimedia" main.py
+        pyinstaller --noconsole --onefile --clean --name="ReproductorMultimedia" main.py
 
     - name: Subir el archivo EXE como Artifact
       uses: actions/upload-artifact@v4
